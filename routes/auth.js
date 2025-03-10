@@ -88,7 +88,11 @@ const router = express.Router();
 
 // Register Route
 router.post("/signup", async (req, res) => {
+  console.log("Signup route hit!");
+
   const { username, email, password } = req.body;
+  console.log("Request Body:", req.body);
+
 
   try {
     // Check if user exists

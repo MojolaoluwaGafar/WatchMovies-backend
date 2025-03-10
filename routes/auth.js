@@ -87,7 +87,7 @@ const pool = require("../config/db"); // PostgreSQL connection
 const router = express.Router();
 
 // Register Route
-router.post("/register", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
@@ -121,7 +121,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Login Route
-router.post("/login", async (req, res) => {
+router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
   try {

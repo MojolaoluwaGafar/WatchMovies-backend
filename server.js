@@ -50,5 +50,19 @@ app.use("/api/auth", (req, res, next) => {
 
 app.use("/api/auth", authRoutes);
 
+app.get("/api/movies", async (req, res) => {
+  try {
+    console.log("Received request at /api/movies");
+    const movies = await pool.query("SELECT * FROM movies"); // Check if your table is actually named 'movies'
+    console.log("Movies fetched:", movies.rows); // Log the fetched movies
+    res.json(movies.rows);
+  } catch (error) {
+    console.error("Error fetching movies:", error); // Log the exact error
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🔥 Server running on port ${PORT}`));

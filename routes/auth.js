@@ -89,6 +89,8 @@ const router = express.Router();
 // Register Route
 router.post("/signup", async (req, res) => {
   console.log("Signup route hit!");
+  console.log("Received POST request at /api/auth/signup");
+
 
   const { username, email, password } = req.body;
   console.log("Request Body:", req.body);

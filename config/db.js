@@ -12,17 +12,22 @@
 
 // module.exports = connectDB;
 
+// const { Pool } = require("pg");
+
+// const pool = new Pool({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "watchmovies",
+//   password: "Codex808",
+//   port: 5000, // ✅ Ensure this is correct
+//   ssl: false, // 🔹 Disable SSL
+// });
+
 const { Pool } = require("pg");
-
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "watchmovies",
-  password: "Codex808",
-  port: 5000, // ✅ Ensure this is correct
-  ssl: false, // 🔹 Disable SSL
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, // Required for Render's PostgreSQL
 });
-
 pool
   .connect()
   .then(() => console.log("🔥 PostgreSQL connected!"))

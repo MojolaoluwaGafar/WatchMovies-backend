@@ -85,6 +85,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const pool = require("../config/db"); // PostgreSQL connection
 const router = express.Router();
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
+const { generateSecureVideoURL } = require("../config/cloudinary");
+
 
 // Register Route
 router.post("/signup", async (req, res) => {
@@ -154,5 +159,29 @@ router.post("/signin", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    resource_type: "video", // Ensures the upload is treated as a video
+    folder: "movies",
+  },
+});
+
+const upload = multer({ storage });
+
+router.post("/upload", upload.single("video"), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+  res.json({ url: req.file.path });
+});
+router.get("/stream/:movieId", (req, res) => {
+  const { movieId } = req.params;
+  const secureURL = generateSecureVideoURL(`movies/${movieId}`);
+
+  res.json({ videoUrl: secureURL });
+});
+
 
 module.exports = router;

@@ -61,6 +61,27 @@ app.get("/api/movies", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+app.get("/api/movies/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    console.log(`Fetching movie with ID: ${id}`);
+
+    // Fetch the movie from PostgreSQL by ID
+    const movie = await pool.query("SELECT * FROM movies WHERE id = $1", [id]);
+
+    // Check if movie exists
+    if (movie.rows.length === 0) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    res.json(movie.rows[0]); // Return the first (and only) movie found
+  } catch (error) {
+    console.error("Error fetching movie:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 
 

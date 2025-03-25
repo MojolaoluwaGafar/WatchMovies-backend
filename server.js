@@ -51,16 +51,27 @@ app.use("/api/auth", (req, res, next) => {
 app.use("/api/auth", authRoutes);
 
 app.get("/api/movies", async (req, res) => {
+  const { title } = req.query;
+
   try {
-    console.log("Received request at /api/movies");
-    const movies = await pool.query("SELECT * FROM movies"); // Check if your table is actually named 'movies'
-    console.log("Movies fetched:", movies.rows); // Log the fetched movies
+    let query = "SELECT * FROM movies";
+    let values = [];
+
+    if (title) {
+      query += " WHERE LOWER(title) LIKE LOWER($1)";
+      values.push(`%${title}%`);
+    }
+
+    const movies = await pool.query(query, values);
+
     res.json(movies.rows);
   } catch (error) {
-    console.error("Error fetching movies:", error); // Log the exact error
+    console.error("Error searching movies:", error);
     res.status(500).json({ error: "Server error" });
   }
 });
+
+
 app.get("/api/movies/:id", async (req, res) => {
   const { id } = req.params;
 

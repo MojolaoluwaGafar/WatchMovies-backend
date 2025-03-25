@@ -25,13 +25,18 @@
 
 const { Pool } = require("pg");
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Required for Render's PostgreSQL
+  user: "postgres",
+  host: "localhost",
+  database: "watchmovies",
+  password: "Codex808",  // Replace with your actual password
+  port: 5000,  // Ensure it's 5000, not 5432
 });
+
 pool
   .connect()
   .then(() => console.log("🔥 PostgreSQL connected!"))
   .catch((err) => console.error("❌ Database connection error:", err));
 
 module.exports = pool;
+
 

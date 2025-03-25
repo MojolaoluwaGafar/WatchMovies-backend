@@ -24,19 +24,19 @@
 // });
 
 const { Pool } = require("pg");
+require("dotenv").config();
+
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "watchmovies",
-  password: "Codex808",  // Replace with your actual password
-  port: 5000,  // Ensure it's 5000, not 5432
+  password: "Codex808", // Use the actual password
+  port: 5000, // Ensure this is 5000, not 5432
 });
 
 pool
   .connect()
-  .then(() => console.log("🔥 PostgreSQL connected!"))
+  .then(() => console.log("🔥 PostgreSQL connected successfully!"))
   .catch((err) => console.error("❌ Database connection error:", err));
 
 module.exports = pool;
-
-

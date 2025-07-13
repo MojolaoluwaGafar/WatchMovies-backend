@@ -1,37 +1,15 @@
-// const mongoose = require("mongoose");
-
-// const connectDB = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI);
-//     console.log("MongoDB connected!");
-//   } catch (err) {
-//     console.error("MongoDB connection error:", err.message);
-//     process.exit(1); // Exit process with failure
-//   }
-// };
-
-// module.exports = connectDB;
-
-// const { Pool } = require("pg");
-
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "watchmovies",
-//   password: "Codex808",
-//   port: 5000, // ✅ Ensure this is correct
-//   ssl: false, // 🔹 Disable SSL
-// });
-
 const { Pool } = require("pg");
 require("dotenv").config();
+
+// console.log("👉 Using DB URL:", process.env.DATABASE_URL);
+// console.trace("🕵️ Pool created from here:");
 
 const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "watchmovies",
-  password: "Codex808", // Use the actual password
-  port: 5000, // Ensure this is 5000, not 5432
+  password: "Codexcodex808", 
+  port: 5432,
 });
 
 pool

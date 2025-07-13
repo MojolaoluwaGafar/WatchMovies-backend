@@ -1,85 +1,3 @@
-// const express = require("express");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-// const User = require("../models/User");
-
-// const router = express.Router();
-
-// // Register Route
-// router.post("/register", async (req, res) => {
-//     console.log("Incoming Request Body:", req.body);
-//     console.log("Register Route Hit!");
-//   const { username, email, password } = req.body;
-//   try {
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser)
-//       return res.status(400).json({ message: "User already exists" });
-
-//     const user = await User.create({ username, email, password });
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "1h",
-//     });
-
-//     res.status(201).json({ user: { id: user._id, username, email }, token });
-//   } catch (err) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
-
-// // Login Route
-// router.post("/login", async (req, res) => {
-//    console.log("Login route hit"); 
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ email });
-//     if (!user) return res.status(400).json({ message: "User not found" });
-
-//     const isPasswordValid = await bcrypt.compare(password, user.password);
-//     if (!isPasswordValid)
-//       return res.status(400).json({ message: "Invalid credentials" });
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "1h",
-//     });
-
-//     res
-//       .status(200)
-//       .json({ user: { id: user._id, username: user.username, email }, token });
-//   } catch (err) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
-
-// // Middleware to check auth token
-// const verifyToken = (req, res, next) => {
-//   const token = req.header("Authorization");
-//   if (!token) return res.status(401).json({ message: "Access denied, no token provided" });
-
-//   try {
-//     const decoded = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
-//     req.user = decoded;
-//     next();
-//   } catch (error) {
-//     res.status(400).json({ message: "Invalid token" });
-//   }
-// };
-
-// // Protected route
-// router.get("/me", verifyToken, async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user.id).select("-password"); // Exclude password from response
-//     if (!user) return res.status(404).json({ message: "User not found" });
-
-//     res.status(200).json(user);
-//   } catch (err) {
-//     console.error("Error fetching user:", err);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// });
-
-// module.exports = router;
-
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -88,7 +6,7 @@ const router = express.Router();
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
-const { generateSecureVideoURL } = require("../config/cloudinary");
+const { generateSecureVideoURL  } = require("../config/cloudinary");
 
 
 // Register Route
@@ -181,6 +99,10 @@ router.get("/stream/:movieId", (req, res) => {
   const secureURL = generateSecureVideoURL(`movies/${movieId}`);
 
   res.json({ videoUrl: secureURL });
+});
+ router.use((req, res, next) => {
+  console.log("Received auth request:", req.method, req.originalUrl);
+  next();
 });
 
 

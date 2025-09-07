@@ -45,8 +45,9 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).json({ user: newUser.rows[0], token });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
+  console.error("❌ Signup error:", err.message, err.stack);
+  res.status(500).json({ message: "Server error", error: err.message });
+}
 });
 
 // Login Route

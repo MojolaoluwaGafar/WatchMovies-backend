@@ -28,7 +28,7 @@ const pool = new Pool(
   isProduction
     ? {
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }, // Render / cloud DB
+        ssl: { rejectUnauthorized: false }, 
       }
     : {
         user: process.env.DB_USER,
